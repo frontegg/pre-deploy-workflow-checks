@@ -20,7 +20,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: yarn ci
+    - run: ls
       shell: bash
     - run: npx nx run validators/checkly:serve
       shell: bash
