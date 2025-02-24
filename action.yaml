@@ -22,7 +22,7 @@ runs:
   steps:
     - name: Checkout code
       uses: actions/checkout@v3
-    - run: ls
+    - run: yarn --frozen-lockfile
       shell: bash
     - run: npx nx run validators/checkly:serve
       shell: bash
