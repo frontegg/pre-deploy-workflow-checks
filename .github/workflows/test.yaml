@@ -1,0 +1,18 @@
+name: Test Checkly Validator
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Test Checkly Validator
+    runs-on: ubuntu-latest
+    steps:
+      - name: Evaluate action step
+        id: evaluator
+        uses: frontegg/split-evaluator-action@main
+        with:
+          checkly-api-key: ${{ secrets.CHECKLY_API_KEY }}
+          checkly-account-id: ${{ secrets.CHECKLY_ACCOUNT_ID }}
+          environment: STG
+      - name: display result
+        run: echo "${{ steps.evaluator.outputs.result }}"

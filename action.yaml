@@ -1,0 +1,27 @@
+name: "Pre-Deploy Workflow Checks"
+author: "Itamar the Gever"
+description: "Evaluates your Checkly checks and set the evaluation treatments as output"
+inputs:
+  checkly-api-key:
+    description: "Checkly API key"
+    required: true
+    default: ""
+  checkly-account-id:
+    description: "Checkly account id"
+    required: true
+    default: ""
+  environment: # environment name
+    description: "Environment name"
+    required: false
+    default: ""
+outputs:
+  result:
+    description: "Evaluation results represented as string (success/failure)"
+runs:
+  using: "composite"
+  steps:
+    - run: npx nx run validators/checkly:serve
+      shell: bash
+branding:
+  icon: "git-merge"
+  color: "blue"
