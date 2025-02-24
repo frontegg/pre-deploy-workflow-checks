@@ -2,6 +2,9 @@ import * as core from '@actions/core';
 import axios from "axios";
 import { Check, CheckStatus } from "./types";
 
+console.log(core.getInput("checkly-api-key"));
+console.log(core.getInput("checkly-account-id"));
+
 const client = axios.create({
   baseURL: "https://api.checklyhq.com/v1",
   headers: {
