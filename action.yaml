@@ -20,7 +20,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: npx nx run validators/checkly:serve
+    - run: nx run validators/checkly:serve
       shell: bash
 branding:
   icon: "git-merge"
