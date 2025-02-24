@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Evaluate action step
         id: evaluator
-        uses: frontegg/split-evaluator-action@main
+        uses: frontegg/pre-deploy-workflow-checks@main
         with:
           checkly-api-key: ${{ secrets.CHECKLY_API_KEY }}
           checkly-account-id: ${{ secrets.CHECKLY_ACCOUNT_ID }}
