@@ -14,7 +14,7 @@
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
     "@types/node": "18.16.9",
-    "esbuild": "^0.19.2",
+    "esbuild": "^0.25.0",
     "nx": "20.4.6",
     "prettier": "^2.6.2",
     "tslib": "^2.3.0",
