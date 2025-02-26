@@ -22,17 +22,17 @@ runs:
       uses: actions/checkout@v3
       with:
         path: pre-deploy-directory
-    - name: Run ls
-      run: ls
-      shell: bash
     - name: Yarn install
+      working-directory: pre-deploy-directory
       run: yarn --frozen-lockfile
       shell: bash
     - name: Build
+      working-directory: pre-deploy-directory
       run: npx nx run validators/checkly:build
       shell: bash
     - name: Run
       id: run-checkly-validator
+      working-directory: pre-deploy-directory
       run: node validators/checkly/dist/main.js
       shell: bash
 branding:
