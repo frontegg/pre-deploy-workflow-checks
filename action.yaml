@@ -5,15 +5,12 @@ inputs:
   checkly-api-key:
     description: "Checkly API key"
     required: true
-    default: ""
   checkly-account-id:
     description: "Checkly account id"
     required: true
-    default: ""
   environment: # environment name
     description: "Environment name"
-    required: false
-    default: ""
+    required: true
 outputs:
   result:
     description: "Evaluation results represented as string (success/failure)"
