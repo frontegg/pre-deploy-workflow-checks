@@ -14,5 +14,9 @@ jobs:
           checkly-api-key: ${{ secrets.CHECKLY_API_KEY_2 }}
           checkly-account-id: ${{ secrets.CHECKLY_ACCOUNT_ID_2 }}
           environment: STG
+        env:
+          INPUT_CHECKLY-API-KEY: ${{secrets.CHECKLY_API_KEY_2}}
+          INPUT_CHECKLY-ACCOUNT-ID: ${{secrets.CHECKLY_ACCOUNT_ID_2}}
+          INPUT_ENVIRONMENT: STG
       - name: display result
         run: echo "${{ steps.evaluator.outputs.result }}"
