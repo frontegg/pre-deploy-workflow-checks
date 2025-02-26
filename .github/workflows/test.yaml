@@ -1,0 +1,23 @@
+name: Test Checkly Validator
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Test Checkly Validator
+    runs-on: ubuntu-latest
+    steps:
+      - name: Evaluate action step
+        id: evaluator
+        uses: frontegg/pre-deploy-workflow-checks@master
+        with:
+          checkly-api-key: ${{ secrets.CHECKLY_API_KEY_2 }}
+          checkly-account-id: ${{ secrets.CHECKLY_ACCOUNT_ID_2 }}
+          environment: staging
+        env:
+          INPUT_CHECKLY-API-KEY: ${{secrets.CHECKLY_API_KEY_2}}
+          INPUT_CHECKLY-ACCOUNT-ID: ${{secrets.CHECKLY_ACCOUNT_ID_2}}
+          INPUT_ENVIRONMENT: staging
+      - name: Display result
+        run: |
+          echo "Result: ${{ steps.evaluator.outputs.result }}"

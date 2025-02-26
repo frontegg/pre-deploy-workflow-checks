@@ -1,6 +1,13 @@
-import core from "@actions/core";
+import * as core from "@actions/core";
 import axios from "axios";
 import { Check, CheckStatus } from "./types";
+
+const envrionmentMap = {
+  'staging': 'STG',
+  'production-au': 'AU',
+  'production-us': 'US',
+  'production-global': 'GLOBAL',
+}
 
 const client = axios.create({
   baseURL: "https://api.checklyhq.com/v1",
@@ -41,12 +48,19 @@ const getAllChecks = async (): Promise<Check[]> => {
 const main = async (): Promise<void> => {
   const checks = await getAllChecks();
   const checksStatus = await getAllChecksStatus();
-  const environment = core.getInput("environment");
+  const environment = envrionmentMap[core.getInput("environment") as keyof typeof envrionmentMap];
+
+  if (!environment) {
+    core.setFailed(`Invalid environment: ${core.getInput("environment")}`);
+    return;
+  }
 
   const failedOrDegradedCheck = checksStatus.find(
     (checkStatus) =>
       (checkStatus.hasFailures || checkStatus.isDegraded) &&
-      checks.find((check) => check.id === checkStatus.checkId)?.tags?.includes(environment)
+      checks
+        .find((check) => check.id === checkStatus.checkId)
+        ?.tags?.includes(environment)
   );
 
   if (failedOrDegradedCheck) {
@@ -57,4 +71,8 @@ const main = async (): Promise<void> => {
   core.setOutput("result", "success");
 };
 
-main().catch((error) => core.setFailed(error.message));
+main().catch((error) =>
+  core.setFailed(
+    JSON.stringify({ message: error.message, data: error.response?.data })
+  )
+);
