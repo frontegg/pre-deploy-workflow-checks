@@ -16,25 +16,9 @@ outputs:
     description: "Evaluation results represented as string (success/failure)"
     value: ${{ steps.run-checkly-validator.outputs.result }}
 runs:
-  using: "composite"
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      with:
-        path: ../../pre-deploy-directory
-    - name: Yarn install
-      working-directory: ../../pre-deploy-directory
-      run: yarn --frozen-lockfile
-      shell: bash
-    - name: Build
-      working-directory: ../../pre-deploy-directory
-      run: npx nx run validators/checkly:build
-      shell: bash
-    - name: Run
-      id: run-checkly-validator
-      working-directory: ../../pre-deploy-directory
-      run: node validators/checkly/dist/main.js
-      shell: bash
+  using: "node20"
+  main: "validators/checkly/dist/main.js"
+
 branding:
   icon: "git-merge"
   color: "blue"
