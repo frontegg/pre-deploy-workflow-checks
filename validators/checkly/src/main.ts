@@ -1,4 +1,4 @@
-import * as core from '@actions/core';
+import * as core from "@actions/core";
 import axios from "axios";
 import { Check, CheckStatus } from "./types";
 
@@ -46,7 +46,9 @@ const main = async (): Promise<void> => {
   const failedOrDegradedCheck = checksStatus.find(
     (checkStatus) =>
       (checkStatus.hasFailures || checkStatus.isDegraded) &&
-      checks.find((check) => check.id === checkStatus.checkId)?.tags?.includes(environment)
+      checks
+        .find((check) => check.id === checkStatus.checkId)
+        ?.tags?.includes(environment)
   );
 
   if (failedOrDegradedCheck) {
@@ -57,4 +59,8 @@ const main = async (): Promise<void> => {
   core.setOutput("result", "success");
 };
 
-main().catch((error) => core.setFailed(error.message));
+main().catch((error) =>
+  core.setFailed(
+    JSON.stringify({ message: error.message, data: error.response?.data })
+  )
+);
