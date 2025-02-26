@@ -22,6 +22,9 @@ runs:
       uses: actions/checkout@v3
       with:
         path: pre-deploy-directory
+    - name: Cd pre-deploy-directory
+      run: cd pre-deploy-directory
+      shell: bash
     - name: Yarn install
       run: yarn --frozen-lockfile
       shell: bash
