@@ -52,13 +52,11 @@ const main = async (): Promise<void> => {
   );
 
   if (failedOrDegradedCheck) {
-    console.log("failutre");
-    core.setOutput("result", "failure");
+    core.setOutput("result", { result: "failure" });
     return;
   }
 
-  console.log("success");
-  core.setOutput("result", "success");
+  core.setOutput("result", { result: "success" });
 };
 
 main().catch((error) =>
