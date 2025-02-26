@@ -5,8 +5,8 @@ import { Check, CheckStatus } from "./types";
 const client = axios.create({
   baseURL: "https://api.checklyhq.com/v1",
   headers: {
-    "x-checkly-account": core.getInput("checkly-account-id"),
-    Authorization: `Bearer ${core.getInput("checkly-api-key")}`,
+    "x-checkly-account": core.getInput("${{ inputs.checkly-account-id }}"),
+    Authorization: `Bearer ${core.getInput("${{ inputs.checkly-api-key }}")}`,
   },
 });
 
@@ -41,7 +41,7 @@ const getAllChecks = async (): Promise<Check[]> => {
 const main = async (): Promise<void> => {
   const checks = await getAllChecks();
   const checksStatus = await getAllChecksStatus();
-  const environment = core.getInput("environment");
+  const environment = core.getInput("${{ inputs.environment }}");
 
   const failedOrDegradedCheck = checksStatus.find(
     (checkStatus) =>
