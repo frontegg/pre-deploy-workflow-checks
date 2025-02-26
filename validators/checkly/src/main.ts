@@ -5,7 +5,7 @@ import { Check, CheckStatus } from "./types";
 const client = axios.create({
   baseURL: "https://api.checklyhq.com/v1",
   headers: {
-    "x-checkly-account": core.getInput("checkly-api-key"),
+    "x-checkly-account": core.getInput("checkly-account-id"),
     Authorization: `Bearer ${core.getInput("checkly-api-key")}`,
   },
 });
