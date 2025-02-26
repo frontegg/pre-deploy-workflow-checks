@@ -19,4 +19,4 @@ jobs:
           INPUT_CHECKLY-ACCOUNT-ID: ${{secrets.CHECKLY_ACCOUNT_ID_2}}
           INPUT_ENVIRONMENT: STG
       - name: display result
-        run: echo "${{ steps.evaluator.outputs }}"
+        run: echo "${{ steps.evaluator.outputs.result }}"
