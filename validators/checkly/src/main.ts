@@ -2,12 +2,12 @@ import * as core from "@actions/core";
 import axios from "axios";
 import { Check, CheckStatus } from "./types";
 
-const envrionmentMap = {
+const environmentMap = {
   'staging': 'STG',
   'production-au': 'AU',
   'production-us': 'US',
   'production-global': 'GLOBAL',
-}
+};
 
 const client = axios.create({
   baseURL: "https://api.checklyhq.com/v1",
@@ -19,7 +19,6 @@ const client = axios.create({
 
 const getAllChecksStatus = async (): Promise<CheckStatus[]> => {
   const { data } = await client.get<CheckStatus[]>("/check-statuses");
-
   return data;
 };
 
@@ -31,10 +30,7 @@ const getAllChecks = async (): Promise<Check[]> => {
 
   while (hasMoreData) {
     const { data } = await client.get<Check[]>("/checks", {
-      params: {
-        page,
-        limit,
-      },
+      params: { page, limit },
     });
 
     allChecks = [...allChecks, ...data];
@@ -48,7 +44,7 @@ const getAllChecks = async (): Promise<Check[]> => {
 const main = async (): Promise<void> => {
   const checks = await getAllChecks();
   const checksStatus = await getAllChecksStatus();
-  const environment = envrionmentMap[core.getInput("environment") as keyof typeof envrionmentMap];
+  const environment = environmentMap[core.getInput("environment") as keyof typeof environmentMap];
 
   if (!environment) {
     core.setFailed(`Invalid environment: ${core.getInput("environment")}`);
@@ -58,21 +54,30 @@ const main = async (): Promise<void> => {
   const failedOrDegradedCheck = checksStatus.find(
     (checkStatus) =>
       (checkStatus.hasFailures || checkStatus.isDegraded) &&
-      checks
-        .find((check) => check.id === checkStatus.checkId)
-        ?.tags?.includes(environment)
+      checks.find((check) => check.id === checkStatus.checkId)?.tags?.includes(environment)
   );
 
   if (failedOrDegradedCheck) {
+    const failedCheck = checks.find((check) => check.id === failedOrDegradedCheck.checkId);
+    const checkName = failedCheck?.name || "Unknown Check";
+    const checkId = failedCheck?.id;
+    const checklyDashboardUrl = `https://app.checklyhq.com/checks/${checkId}`;
+
+    console.error(`❌ Check Failed: ${checkName}`);
+    console.error(`🔗 View details: ${checklyDashboardUrl}`);
+    
     core.setOutput("result", "failure");
+    core.setFailed(`Check failed: ${checkName}. View details: ${checklyDashboardUrl} or: https://g03dtl52.checkly-dashboards.com/`);
     return;
   }
 
+  console.log("✅ All checks passed!");
   core.setOutput("result", "success");
 };
 
-main().catch((error) =>
+main().catch((error) => {
+  console.error("🚨 Error occurred:", error);
   core.setFailed(
     JSON.stringify({ message: error.message, data: error.response?.data })
-  )
-);
+  );
+});
