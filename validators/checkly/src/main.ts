@@ -72,7 +72,7 @@ const main = async (): Promise<void> => {
     core.setOutput("checkly_dashboard_url", checklyDashboardUrl);
     core.setOutput("error_message", `Check failed: ${checkName}. View details: ${checklyDashboardUrl}`);
     
-    core.setFailed(`Check failed: ${checkName}. View details: ${checklyDashboardUrl} or: https://g03dtl52.checkly-dashboards.com/`);
+    core.setFailed(`Check failed: ${checkName}. View details: ${checklyDashboardUrl}`);
     return;
   }
 
